@@ -9,6 +9,9 @@
     "lint": "eslint",
     "vercel-build": "npm install && next build"
   },
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "dependencies": {
     "@splinetool/react-spline": "^4.1.0",
     "@splinetool/runtime": "^1.12.27",
