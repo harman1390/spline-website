@@ -1,4 +1,3 @@
-import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 const reviews = [
@@ -59,10 +58,36 @@ const reviews = [
 ];
 
 const Reviews = () => {
-  const [mounted, setMounted] = useState(false);
+  const [isVisible, setIsVisible] = useState<boolean[]>([]);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    setIsClient(true);
+    setIsVisible(Array(reviews.length).fill(false));
+    
+    if (typeof window !== 'undefined') {
+      const handleScroll = () => {
+        reviews.forEach((_, index) => {
+          const element = document.getElementById(`review-${index}`);
+          if (element) {
+            const rect = element.getBoundingClientRect();
+            const isInView = rect.top < window.innerHeight && rect.bottom >= 0;
+            if (isInView) {
+              setIsVisible(prev => {
+                const newVisible = [...prev];
+                newVisible[index] = true;
+                return newVisible;
+              });
+            }
+          }
+        });
+      };
+
+      window.addEventListener('scroll', handleScroll);
+      handleScroll(); // Initial check
+      
+      return () => window.removeEventListener('scroll', handleScroll);
+    }
   }, []);
 
   const renderStars = (rating: number) => {
@@ -95,14 +120,19 @@ const Reviews = () => {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {reviews.map((review, index) => (
-            <motion.div
+            <div 
               key={review.id}
-              className="bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow"
-              initial={mounted ? { opacity: 0, y: 30 } : undefined}
-              whileInView={mounted ? { opacity: 1, y: 0 } : undefined}
-              viewport={{ once: true }}
-              transition={mounted ? { duration: 0.5, delay: index * 0.1 } : { duration: 0 }}
-            >
+              id={`review-${index}`}
+              className="bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300"
+              style={{
+                opacity: isClient ? (isVisible[index] ? 1 : 0) : 1,
+                transform: isClient ? (isVisible[index] ? 'translateY(0)' : 'translateY(30px)') : 'none',
+                transitionProperty: isClient ? 'opacity, transform, box-shadow' : 'none',
+                transitionDuration: isClient ? '0.5s, 0.5s, 0.3s' : '0s',
+                transitionTimingFunction: isClient ? 'ease, ease, ease' : 'ease',
+                transitionDelay: isClient ? (isVisible[index] ? `${index * 0.1}s` : '0s') : '0s',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+              }}>
               <div className="flex justify-between items-start mb-4">
                 <div className="flex items-center">
                   <img 
@@ -134,10 +164,10 @@ const Reviews = () => {
                   <span className="text-sm text-gray-500">Verified Project</span>
                 </div>
                 <div className="text-gray-400 text-sm">
-                  {Math.floor(Math.random() * 12) + 1} months ago
+                  {review.platform} • {isClient ? (Math.floor((review.id * 7) % 12) + 1) : '0'} months ago
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
         
