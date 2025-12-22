@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
 const reviews = [
   {
@@ -58,6 +59,12 @@ const reviews = [
 ];
 
 const Reviews = () => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const renderStars = (rating: number) => {
     return Array(5).fill(0).map((_, i) => (
       <svg
@@ -86,16 +93,15 @@ const Reviews = () => {
   return (
     <section className="py-10">
       <div className="container mx-auto px-6">
-        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {reviews.map((review, index) => (
             <motion.div
               key={review.id}
               className="bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={mounted ? { opacity: 0, y: 30 } : undefined}
+              whileInView={mounted ? { opacity: 1, y: 0 } : undefined}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={mounted ? { duration: 0.5, delay: index * 0.1 } : { duration: 0 }}
             >
               <div className="flex justify-between items-start mb-4">
                 <div className="flex items-center">
