@@ -116,14 +116,14 @@ const Reviews = () => {
   };
 
   return (
-    <section className="py-10">
-      <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <section className="py-8 sm:py-12">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {reviews.map((review, index) => (
             <div 
               key={review.id}
               id={`review-${index}`}
-              className="bg-white p-8 rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300"
+              className="bg-white p-5 sm:p-6 md:p-8 rounded-xl shadow-md sm:shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300"
               style={{
                 opacity: isClient ? (isVisible[index] ? 1 : 0) : 1,
                 transform: isClient ? (isVisible[index] ? 'translateY(0)' : 'translateY(30px)') : 'none',
@@ -138,41 +138,43 @@ const Reviews = () => {
                   <img 
                     src={review.avatar} 
                     alt={review.name}
-                    className="w-12 h-12 rounded-full object-cover mr-4"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover mr-3 sm:mr-4"
                   />
                   <div>
-                    <h4 className="font-semibold text-gray-900">{review.name}</h4>
-                    <p className="text-sm text-gray-600">{review.role}</p>
+                    <div>
+                      <h4 className="font-semibold text-gray-900 text-sm sm:text-base">{review.name}</h4>
+                      <p className="text-xs sm:text-sm text-gray-600">{review.role}</p>
+                    </div>
                   </div>
                 </div>
-                <span className={`text-xs px-3 py-1 rounded-full ${getPlatformBadgeClass(review.platform)}`}>
+                <span className={`text-[10px] sm:text-xs px-2 sm:px-3 py-0.5 sm:py-1 rounded-full ${getPlatformBadgeClass(review.platform)}`}>
                   {review.platform}
                 </span>
               </div>
               
-              <div className="flex mb-4">
+              <div className="flex mb-3 sm:mb-4">
                 {renderStars(review.rating)}
               </div>
               
-              <p className="text-gray-600 italic">"{review.content}"</p>
+              <p className="text-sm sm:text-base text-gray-600 italic leading-relaxed">"{review.content}"</p>
               
-              <div className="mt-6 pt-6 border-t border-gray-100 flex justify-between items-center">
+              <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0">
                 <div className="flex items-center">
-                  <svg className="w-5 h-5 text-gray-400 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  <span className="text-sm text-gray-500">Verified Project</span>
+                  <span className="text-xs sm:text-sm text-gray-500">Verified Project</span>
                 </div>
-                <div className="text-gray-400 text-sm">
-                  {review.platform} • {isClient ? (Math.floor((review.id * 7) % 12) + 1) : '0'} months ago
+                <div className="text-gray-400 text-xs sm:text-sm">
+                  {review.platform} • {isClient ? (Math.floor((review.id * 7) % 12) + 1) : '0'}m ago
                 </div>
               </div>
             </div>
           ))}
         </div>
         
-        <div className="mt-16 text-center">
-          <button className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 px-8 py-3 rounded-full font-medium transition-colors">
+        <div className="mt-12 sm:mt-16 text-center">
+          <button className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 px-6 sm:px-8 py-2 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-colors">
             View All Testimonials
           </button>
         </div>
