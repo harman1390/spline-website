@@ -173,11 +173,13 @@ const Reviews = () => {
           ))}
         </div>
         
+        {/* Temporarily hidden
         <div className="mt-12 sm:mt-16 text-center">
           <button className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 px-6 sm:px-8 py-2 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-colors">
             View All Testimonials
           </button>
         </div>
+        */}
       </div>
     </section>
   );

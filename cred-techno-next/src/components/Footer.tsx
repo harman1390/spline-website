@@ -3,9 +3,16 @@
 import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const Footer = () => {
+  const pathname = usePathname();
   const currentYear = new Date().getFullYear();
+
+  // Don't render footer on services page
+  if (pathname?.startsWith('/services')) {
+    return null;
+  }
   
   return (
     <footer className="bg-gray-900 text-white pt-12 md:pt-16 pb-8">

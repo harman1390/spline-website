@@ -22,22 +22,16 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative h-screen bg-gradient-to-b from-gray-50 to-white overflow-hidden">
+    <section className="relative h-screen bg-gray-100 overflow-hidden">
       {/* Mobile Hero */}
-      <div className="md:hidden h-full flex items-center justify-center px-4 text-center">
-        <div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-6">
+      <div className="md:hidden h-full flex items-center justify-center px-6 text-center">
+        <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-lg border border-gray-100">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4 [text-shadow: 0 1px 3px rgba(0,0,0,0.1)]">
             Welcome to CredTechno
           </h1>
-          <p className="text-xl text-gray-600 mb-8">
+          <p className="text-xl text-gray-600 [text-shadow: 0 1px 2px rgba(0,0,0,0.1)]">
             Innovative solutions for the digital age
           </p>
-          <a 
-            href="#contact" 
-            className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105"
-          >
-            Get Started
-          </a>
         </div>
       </div>
 
@@ -49,15 +43,9 @@ const Hero = () => {
               <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
                 Welcome to CredTechno
               </h1>
-              <p className="text-xl text-gray-600 mb-8">
+              <p className="text-xl text-gray-600">
                 Innovative solutions for the digital age
               </p>
-              <a 
-                href="#contact" 
-                className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105"
-              >
-                Get Started
-              </a>
             </div>
           </div>
         ) : (

@@ -4,8 +4,15 @@ import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const Navbar = () => {
+  const pathname = usePathname();
+  
+  // Don't render the navbar on the services page
+  if (pathname === '/services') {
+    return null;
+  }
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isAnimatingOut, setIsAnimatingOut] = useState(false);
@@ -63,6 +70,20 @@ const Navbar = () => {
     }
   };
   
+  const scrollToSection = (id: string) => {
+    if (mobileMenuOpen) {
+      closeMobileMenu();
+    }
+    
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
   const closeMobileMenu = () => {
     if (!mobileMenuOpen) return;
     // Start the close animation
@@ -83,30 +104,78 @@ const Navbar = () => {
       transition={{ duration: 0.5 }}
     >
       <div className="container mx-auto px-4 sm:px-6 flex justify-between items-center">
-        <div className={`flex items-center space-x-3 rounded-[30px] pl-4 sm:pl-6 pr-6 sm:pr-8 py-2 sm:py-3 transition-all duration-300 ${scrolled || mobileMenuOpen ? 'bg-white/20 backdrop-blur-sm' : ''}`}>
-          <Link href="#home" onClick={closeMobileMenu} className="flex items-center space-x-3">
-            <Image 
-              src="/CT-logo.png" 
-              alt="Cred Techno" 
-              width={40}
-              height={40}
-              className="h-8 w-8 sm:h-10 sm:w-10 opacity-100 hover:opacity-90 transition-opacity" 
-              priority
-            />
-            <span className="text-lg sm:text-xl font-bold text-gray-800">Cred Techno</span>
-          </Link>
+        <div className="relative">
+          <div className={`flex items-center space-x-3 rounded-2xl pl-4 sm:pl-6 pr-6 sm:pr-8 py-2 sm:py-3 transition-all duration-300 ${
+            scrolled || mobileMenuOpen ? 'bg-white/80 backdrop-blur-sm' : 'bg-white/50'
+          }`}>
+            <Link href="#home" onClick={closeMobileMenu} className="flex items-center space-x-3">
+              <Image 
+                src="/CT-logo.png" 
+                alt="Cred Techno" 
+                width={40}
+                height={40}
+                className="h-8 w-8 sm:h-10 sm:w-10 opacity-100 hover:opacity-90 transition-all duration-300 hover:scale-105" 
+                priority
+              />
+              <span className="text-lg sm:text-xl font-bold text-gray-800">Cred Techno</span>
+            </Link>
+          </div>
         </div>
         
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center bg-white/20 backdrop-blur-sm rounded-[30px] pl-6 pr-2 py-1">
           <div className="flex items-center space-x-0">
-            <Link href="#home" className="px-4 py-2 text-gray-700 hover:text-blue-600 transition-colors">Home</Link>
-            <Link href="#services" className="px-4 py-2 text-gray-700 hover:text-blue-600 transition-colors">Services</Link>
-            <Link href="#work" className="px-4 py-2 text-gray-700 hover:text-blue-600 transition-colors">Our Work</Link>
-            <Link href="#reviews" className="px-4 py-2 text-gray-700 hover:text-blue-600 transition-colors">Reviews</Link>
+            <button 
+              onClick={(e) => {
+                e.preventDefault();
+                window.scrollTo({
+                  top: 0,
+                  behavior: 'smooth'
+                });
+              }}
+              className="px-4 py-2 text-gray-700 hover:text-blue-600 transition-colors"
+            >
+              Home
+            </button>
+            <button 
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('services');
+              }}
+              className="px-4 py-2 text-gray-700 hover:text-blue-600 transition-colors"
+            >
+              Services
+            </button>
+            <button 
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('work');
+              }}
+              className="px-4 py-2 text-gray-700 hover:text-blue-600 transition-colors"
+            >
+              Our Work
+            </button>
+            <button 
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToSection('reviews');
+              }}
+              className="px-4 py-2 text-gray-700 hover:text-blue-600 transition-colors"
+            >
+              Reviews
+            </button>
           </div>
           <Link 
-            href="/contact" 
+            href="/services" 
+            className="block md:hidden w-full text-center mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl transition-all"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={closeMobileMenu}
+          >
+            Get in Touch
+          </Link>
+          <Link 
+            href="/services" 
             className="ml-2 bg-blue-600/90 hover:bg-blue-700 text-white px-6 py-2 rounded-3xl transition-all h-10 my-1 inline-flex items-center"
             target="_blank"
             rel="noopener noreferrer"
@@ -162,39 +231,49 @@ const Navbar = () => {
         </button>
         
         <div className="flex flex-col space-y-4 mt-8">
-          <Link 
-            href="#home" 
-            className="text-2xl font-medium text-gray-800 hover:text-blue-600 py-3 border-b border-gray-100"
-            onClick={closeMobileMenu}
+          <button 
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+              });
+              closeMobileMenu();
+            }}
+            className="text-left text-2xl font-medium text-gray-800 hover:text-blue-600 py-3 border-b border-gray-100"
           >
             Home
-          </Link>
-          <Link 
-            href="#services" 
-            className="text-2xl font-medium text-gray-800 hover:text-blue-600 py-3 border-b border-gray-100"
-            onClick={closeMobileMenu}
+          </button>
+          <button 
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection('services');
+            }}
+            className="text-left text-2xl font-medium text-gray-800 hover:text-blue-600 py-3 border-b border-gray-100"
           >
             Services
-          </Link>
-          <Link 
-            href="#work" 
-            className="text-2xl font-medium text-gray-800 hover:text-blue-600 py-3 border-b border-gray-100"
-            onClick={closeMobileMenu}
+          </button>
+          <button 
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection('work');
+            }}
+            className="text-left text-2xl font-medium text-gray-800 hover:text-blue-600 py-3 border-b border-gray-100"
           >
             Our Work
-          </Link>
-          <Link 
-            href="#reviews" 
-            className="text-2xl font-medium text-gray-800 hover:text-blue-600 py-3 border-b border-gray-100"
-            onClick={closeMobileMenu}
+          </button>
+          <button 
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection('reviews');
+            }}
+            className="text-left text-2xl font-medium text-gray-800 hover:text-blue-600 py-3 border-b border-gray-100"
           >
             Reviews
-          </Link>
+          </button>
           <Link 
-            href="/contact" 
+            href="/services" 
             className="mt-6 bg-blue-600 hover:bg-blue-700 text-white text-center text-lg font-medium py-3 px-6 rounded-full transition-colors"
-            target="_blank"
-            rel="noopener noreferrer"
             onClick={closeMobileMenu}
           >
             Get in Touch
